@@ -151,7 +151,7 @@ func parseGameLine(line string) []Game {
 		// iterate over the different color stones
 		for _, pick := range cubes {
 			// extract count and color
-			countAndColorPattern := `(\d+)\s*([a-zA-Z]+)`
+			countAndColorPattern := `(\d+) ([red|green|blue]+)`
 			regex, _ := regexp.Compile(countAndColorPattern)
 			match := regex.FindStringSubmatch(pick)
 			count, _ := strconv.Atoi(match[1])
