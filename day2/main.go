@@ -131,8 +131,8 @@ func parseGameLine(line string) []Game {
 
 	// parse out the id and store it
 	gameIdPattern := `(\d+)`
-	regex, _ := regexp.Compile(gameIdPattern)
-	gameId := regex.FindString(strs[0])
+	idRegEx, _ := regexp.Compile(gameIdPattern)
+	gameId := idRegEx.FindString(strs[0])
 
 	// break out the reset of the line for each grab
 	grabs := strings.Split(strs[1], ";")
@@ -150,10 +150,12 @@ func parseGameLine(line string) []Game {
 
 		// iterate over the different color stones
 		for _, pick := range cubes {
-			// split the number from the word
-			colorGroup := strings.Split(strings.TrimSpace(pick), " ")
-			count, _ := strconv.Atoi(colorGroup[0])
-			color := colorGroup[1]
+			// extract count and color
+			countAndColorPattern := `(\d+)\s*([a-zA-Z]+)`
+			regex, _ := regexp.Compile(countAndColorPattern)
+			match := regex.FindStringSubmatch(pick)
+			count, _ := strconv.Atoi(match[1])
+			color := match[2]
 
 			// store the data on the game object
 			game.Id, _ = strconv.Atoi(gameId)
